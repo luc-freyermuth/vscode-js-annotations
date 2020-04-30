@@ -57,4 +57,12 @@ suite("splitToParamList tests", () => {
 
     assert.deepEqual(paramList, expectedList);
   });
+
+  test("should handle params with default values", () => {
+    const paramDef = "str: string = 'test', opts: any";
+    const expectedList = ["str: string = 'test'", "opts: any"];
+    const paramList = splitToParamList(paramDef);
+
+    assert.deepEqual(paramList, expectedList);
+  });
 });
