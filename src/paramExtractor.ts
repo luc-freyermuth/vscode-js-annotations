@@ -53,19 +53,17 @@ export function splitToParamList(defintionParam: string): string[] {
     // If numToGet is zero, check the difference between '<' and '>' characters
     if (numToGet === 0) {
       const numOfLessThanBrackets = currentStr.split("<").length - 1;
-      const numOfGreaterThanBrackets = currentStr.split(">").length - 1;
+      const numOfGreaterThanBrackets = currentStr.split(">").length - currentStr.split("=>").length;
 
       const numOfOpenParen = currentStr.split("(").length - 1;
       const numOfCloseParen = currentStr.split(")").length - 1;
 
-      const numOfEqualSigns = currentStr.split("=").length - 1;
-
       // Diff is |num of left brackets ('<') minus the num of solo right brackets (which is the number of '>' minus the num of '=' signs)|
-      const triBracketDiff = Math.abs(numOfLessThanBrackets - (numOfGreaterThanBrackets - numOfEqualSigns));
+      const triBracketDiff = Math.abs(numOfLessThanBrackets - numOfGreaterThanBrackets);
 
       const parenDiff = Math.abs(numOfOpenParen - numOfCloseParen);
 
-      if (((numOfEqualSigns > 0) && (numOfGreaterThanBrackets - numOfEqualSigns) === numOfLessThanBrackets) || (triBracketDiff === 0 && parenDiff === 0)) {
+      if (triBracketDiff === 0 && parenDiff === 0) {
         // If the difference is zero, we have a full param, push it to the new params, and start over at the next string
         // Also, do this if there is equal signs in the params which exist with arrow functions.
         currentStr = currentStr.substr(0, currentStr.length - 2);
